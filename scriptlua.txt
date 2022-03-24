@@ -1,0 +1,245 @@
+-- this is the bool variables
+speedPlayer = 0;
+infinityWater = 0;
+infinityEnergy = 0;
+infinityMoney = 0;
+freezeTime = 0;
+chosenTime = 0;
+moneyF = 0; --- only to see if is the first time enabling
+
+
+-- this is the address pointer
+
+pointerSpeed = "[[[[[[[[System.Private.CoreLib.dll+0001CAF0]+28]+90]+10]+3D8]+0]+8]+E8]+84"
+pointerWater = "[[[[[[[[[System.Private.CoreLib.dll+0001A348]+30]+14C]+0]+160]+108]+58]+18]+C0]+D4"
+pointerEnergy = "[[[[[[[System.Private.CoreLib.dll+0001D778]+20]+F0]+48]+834]+0]+370]+9DC"
+pointerMoney = "[[[[[[[System.Private.CoreLib.dll+00023610]+10]+88]+10]+6A0]+0]+440]+3A4"
+pointerTime = "[[[[[[[System.IO.FileSystem.dll+00001000]+120]+78]+20]+20]+48]+3E4]+50"
+pointerPlayerX = "[[[[[[[System.Private.Xml.dll+000221B0]+8]+B8]+10]+12C]+0]+610]+238"
+pointerPlayerY = "[[[[[[[[System.Private.CoreLib.dll+0001A348]+30]+14C]+0]+A8]+30]+8]+240]+75C"
+
+-- this is the value to be modified
+
+speedValue2x = 7;
+speedValue4x = 10;
+speedValue8x = 15;
+speedValue20x = 25;
+speedValue50x = 50;
+speedValueOff = 5;
+speedValue = 5; -- initial value
+waterValue = 40; -- max value
+energyValue = 270 --maxvalue
+moneyValue = 999999 -- its enough
+moneycValue = 0; -- its money of the player
+freezeTimeValue = 0; -- current player time
+
+---------------------------------
+function CETrainer_2_CELabel5Click(sender)
+messageDialog("Made by Samuel Filipe\n\nHow to Use:\nOpen the game, enter in your save and so when you will be able to move the player open the cheat and enjoy!",mtInformation, mbOK)
+end
+
+function CETrainer_2_CELabel4Click(sender)
+messageDialog("Dont sell it, only for enjoy!\nMy channel: https://youtube.com/c/s4muu",mtInformation, mbOK)
+end
+
+-- speed
+function SpeedPlayer(sender)
+speedIndex = sender.ItemIndex;
+speedValue = 5;
+if(speedIndex == 0) then
+speedValue = speedValueOff;
+speedPlayer = 0;
+writeInteger(pointerSpeed,speedValue);
+messageDialog("Speed Off",mtInformation, mbOK)
+end
+if(speedIndex == 1) then
+speedValue = speedValue2x;
+speedPlayer = 1;
+end
+if(speedIndex == 2) then
+speedValue = speedValue4x;
+speedPlayer = 1;
+end
+if(speedIndex == 3) then
+speedValue = speedValue8x;
+speedPlayer = 1;
+end
+if(speedIndex == 4) then
+speedValue = speedValue20x;
+speedPlayer = 1;
+end
+if(speedIndex == 5) then
+speedValue = speedValue50x;
+speedPlayer = 1;
+end
+end
+
+t = createTimer();
+t.Interval = 100 -- ms
+
+t.onTimer = function(sender)
+ if(speedPlayer > 0) then
+   writeInteger(pointerSpeed,speedValue);
+   end
+end
+
+-- infinity water
+function Water(sender)
+if(infinityWater == 0) then
+infinityWater = 1;
+else
+infinityWater = 0;
+end
+end
+
+t2 = createTimer();
+t2.Interval = 100 -- ms
+
+t2.onTimer = function(sender)
+ if(infinityWater > 0) then
+   writeInteger(pointerWater,waterValue);
+   end
+end
+
+-- infinity money
+
+function Money(sender)
+if(moneyF == 0) then
+moneyF = 1;
+moneycValue = readInteger(pointerMoney);
+end
+if(infinityMoney == 0) then
+infinityMoney = 1;
+WriteInteger(pointerMoney, moneyValue);
+else
+infinityMoney = 0;
+WriteInteger(pointerMoney, moneycValue);
+end
+end
+
+
+-- infinity energy
+function Energy(sender)
+if(infinityEnergy == 0) then
+infinityEnergy = 1;
+else
+infinityEnergy = 0;
+end
+end
+
+t3 = createTimer();
+t3.Interval = 100 -- ms
+
+t3.onTimer = function(sender)
+ if(infinityEnergy > 0) then
+   writeFloat(pointerEnergy,energyValue);
+   end
+end
+
+-- freeze time
+function FreezeTime(sender)
+if(freezeTime == 0) then
+freezeTime = 1;
+freezeTimeValue = readInteger(pointerTime);
+else
+freezeTime = 0;
+end
+end
+
+t4 = createTimer();
+t4.Interval = 100 -- ms
+
+t4.onTimer = function(sender)
+ if(freezeTime > 0) then
+   writeInteger(pointerTime,freezeTimeValue);
+   end
+end
+
+-- set time
+function SetTime(sender)
+chosenTime = sender.ItemIndex;
+if(chosenTime >= 0) then
+writeInteger(pointerTime,chosenTime * 100);
+end
+end
+
+function ShowPlayerInfo()
+messageDialog("Money => " .. readInteger(pointerMoney).. "\n" ..
+"Energy => " .. readFloat(pointerEnergy) .. "\n" ..
+"Water => " .. readInteger(pointerWater) .. "\n" ..
+"Time => " .. readInteger(pointerTime) .. "\n" ..
+"Player Speed => " .. readInteger(pointerSpeed) .. "\n" ..
+"Player X => " .. readFloat(pointerPlayerX) .. "\n" ..
+"Player Y => " .. readFloat(pointerPlayerY),mtInformation, mbOK)
+
+end
+
+function HowTeleport()
+messageDialog("To Use The Teleport you have:\n\n-Ensure you is in the map of city, that's in the town square!\nAfter this you can set the locale and enjoy :)",mtInformation, mbOK)
+end
+
+function TeleportTo(sender)
+teleportIndex = sender.ItemIndex;
+
+if(teleportIndex == 0) then
+  writeFloat(pointerPlayerX, 1833);
+  writeFloat(pointerPlayerY, 4319);
+end
+
+if(teleportIndex == 1) then
+  writeFloat(pointerPlayerX, 6128);
+  writeFloat(pointerPlayerY, 3352);
+end
+
+if(teleportIndex == 2) then
+  writeFloat(pointerPlayerX, 2766);
+  writeFloat(pointerPlayerY, 3707);
+end
+
+if(teleportIndex == 3) then
+  writeFloat(pointerPlayerX, 2877);
+  writeFloat(pointerPlayerY, 4629);
+end
+
+if(teleportIndex == 4) then
+  writeFloat(pointerPlayerX, 4721);
+  writeFloat(pointerPlayerY, 3446);
+end
+
+if(teleportIndex == 5) then
+  writeFloat(pointerPlayerX, 4620);
+  writeFloat(pointerPlayerY, 4457);
+end
+
+if(teleportIndex == 6) then
+  writeFloat(pointerPlayerX, 3718);
+  writeFloat(pointerPlayerY, 5622);
+end
+
+if(teleportIndex == 7) then
+  writeFloat(pointerPlayerX, 4939);
+  writeFloat(pointerPlayerY, 6056);
+end
+
+if(teleportIndex == 8) then
+  writeFloat(pointerPlayerX, 3456);
+  writeFloat(pointerPlayerY, 6928);
+end
+
+if(teleportIndex == 9) then
+  writeFloat(pointerPlayerX, 2206);
+  writeFloat(pointerPlayerY, 6233);
+end
+
+if(teleportIndex == 10) then
+  writeFloat(pointerPlayerX, 6054);
+  writeFloat(pointerPlayerY, 5298);
+end
+
+if(teleportIndex == 11) then
+  writeFloat(pointerPlayerX, 6461);
+  writeFloat(pointerPlayerY, 5829);
+end
+
+
+end
